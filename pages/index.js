@@ -1,10 +1,18 @@
-import styled from 'styled-components'
+import { signIn, useSession } from 'next-auth/client';
+import { ButtonSignIn, Title } from '../styles';
 
-const Title = styled.h1`
-  font-size: 50px;
-  color: ${({ theme }) => theme.colors.primary};
-`
+import DashBoard from './dashboard';
 
-export default function Home() {
-  return <Title>My page</Title>
+export default function Page() {
+  const [ session, loading ] = useSession();
+  
+  return <>
+    {!session && <>
+      <Title>Not signed in</Title>
+      <ButtonSignIn onClick={() => signIn()}>Sign in</ButtonSignIn>
+    </>}
+    {session && <>
+      <DashBoard />
+    </>}
+  </>
 }
